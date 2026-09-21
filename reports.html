@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reports | Smart Expense Tracker</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <!-- ================================
+         NAVIGATION
+         ================================ -->
+
+    <div class="navbar">
+
+        <a href="{{ url_for('dashboard') }}">
+            🏠 Dashboard
+        </a>
+
+        <a href="{{ url_for('add_expense') }}">
+            ➕ Add Expense
+        </a>
+
+        <a href="{{ url_for('expenses') }}">
+            📋 Expenses
+        </a>
+
+        <a href="{{ url_for('budget') }}">
+            💰 Budget
+        </a>
+
+        <a href="{{ url_for('reports') }}">
+            📊 Reports
+        </a>
+
+        <a href="{{ url_for('logout') }}">
+            🚪 Logout
+        </a>
+
+    </div>
+
+
+    <!-- ================================
+         PAGE HEADING
+         ================================ -->
+
+    <h1>Expense Reports</h1>
+
+    <p>
+        Analyze your spending and understand where your money is going.
+    </p>
+
+
+    <!-- ================================
+         SUMMARY CARDS
+         ================================ -->
+
+    <div class="dashboard-cards">
+
+        <!-- Total Spending -->
+
+        <div class="card">
+
+            <h3>💳 Total Spending</h3>
+
+            <div class="amount">
+                ₹{{ "%.2f"|format(total_expenses) }}
+            </div>
+
+            <p>
+                Total recorded expenses
+            </p>
+
+        </div>
+
+
+        <!-- Categories -->
+
+        <div class="card">
+
+            <h3>📂 Categories</h3>
+
+            <div class="amount">
+                {{ category_data|length }}
+            </div>
+
+            <p>
+                Categories with spending
+            </p>
+
+        </div>
+
+
+        <!-- Analysis -->
+
+        <div class="card">
+
+            <h3>📊 Analysis</h3>
+
+            <div class="amount">
+
+                {% if total_expenses > 0 %}
+                    Active
+                {% else %}
+                    —
+                {% endif %}
+
+            </div>
+
+            <p>
+                Spending analysis status
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================
+         SPENDING CHART
+         ================================ -->
+
+    <div class="chart-container">
+
+        <h2>📊 Spending by Category</h2>
+
+        {% if category_data %}
+
+            <div class="chart-wrapper">
+
+                <canvas
+                    id="expenseChart"
+                    data-categories="{{ categories | tojson | forceescape }}"
+                    data-amounts="{{ category_amounts | tojson | forceescape }}">
+                </canvas>
+
+            </div>
+
+        {% else %}
+
+            <div class="summary-box">
+
+                <p>
+                    No expense data is available yet.
+                    Add some expenses to generate your report.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- ================================
+         CATEGORY BREAKDOWN
+         ================================ -->
+
+    <div class="summary-box">
+
+        <h2>📋 Category-wise Breakdown</h2>
+
+        {% if category_data %}
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Category
+                        </th>
+
+                        <th>
+                            Amount Spent
+                        </th>
+
+                        <th>
+                            Percentage
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for item in category_data %}
+
+                        <tr>
+
+                            <td>
+                                {{ item.category_name }}
+                            </td>
+
+                            <td>
+                                ₹{{ "%.2f"|format(item.total) }}
+                            </td>
+
+                            <td>
+
+                                {% if total_expenses > 0 %}
+
+                                    {{ "%.1f"|format(
+                                        (item.total / total_expenses) * 100
+                                    ) }}%
+
+                                {% else %}
+
+                                    0%
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        {% else %}
+
+            <p>
+                No category-wise data available.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- ================================
+         QUICK ACTIONS
+         ================================ -->
+
+    <h2>⚡ Quick Actions</h2>
+
+    <div class="dashboard-cards">
+
+        <div class="card">
+
+            <h3>➕ Add Expense</h3>
+
+            <p>
+                Record a new expense.
+            </p>
+
+            <br>
+
+            <a href="{{ url_for('add_expense') }}">
+                Add Expense →
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>📋 View Expenses</h3>
+
+            <p>
+                Review all your recorded expenses.
+            </p>
+
+            <br>
+
+            <a href="{{ url_for('expenses') }}">
+                View Expenses →
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>🏠 Dashboard</h3>
+
+            <p>
+                Return to your financial overview.
+            </p>
+
+            <br>
+
+            <a href="{{ url_for('dashboard') }}">
+                Back to Dashboard →
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================================
+     CHART SCRIPT
+     ================================ -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const chartCanvas =
+        document.getElementById("expenseChart");
+
+    if (!chartCanvas) {
+        return;
+    }
+
+
+    const chartLabels =
+        JSON.parse(chartCanvas.dataset.categories);
+
+    const chartAmounts =
+        JSON.parse(chartCanvas.dataset.amounts);
+
+
+    new Chart(chartCanvas, {
+
+        type: "doughnut",
+
+        data: {
+
+            labels: chartLabels,
+
+            datasets: [{
+
+                data: chartAmounts,
+
+                borderWidth: 3,
+
+                hoverOffset: 12
+
+            }]
+
+        },
+
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+
+            plugins: {
+
+                legend: {
+
+                    position: "bottom",
+
+                    labels: {
+
+                        padding: 20,
+
+                        font: {
+                            size: 13
+                        }
+
+                    }
+
+                },
+
+
+                tooltip: {
+
+                    callbacks: {
+
+                        label: function (context) {
+
+                            const value =
+                                context.raw;
+
+                            return " ₹" +
+                                Number(value).toLocaleString(
+                                    "en-IN",
+                                    {
+                                        minimumFractionDigits: 2
+                                    }
+                                );
+
+                        }
+
+                    }
+
+                }
+
+            },
+
+
+            animation: {
+
+                animateRotate: true,
+
+                animateScale: true,
+
+                duration: 1200
+
+            }
+
+        }
+
+    });
+
+});
+
+</script>
+
+
+</body>
+
+</html>

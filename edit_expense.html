@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Expense</title>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Edit Expense</h1>
+
+        <form method="POST">
+
+            <label>Amount</label><br>
+
+            <input
+                type="number"
+                name="amount"
+                step="0.01"
+                min="0.01"
+                value="{{ expense.amount }}"
+                required
+            >
+
+            <br><br>
+
+            <label>Date</label><br>
+
+            <input
+                type="date"
+                name="expense_date"
+                value="{{ expense.expense_date }}"
+                required
+            >
+
+            <br><br>
+
+            <label>Category</label><br>
+
+            <select name="category_id" required>
+
+                {% for category in categories %}
+
+                <option
+                    value="{{ category.category_id }}"
+                    {% if category.category_id == expense.category_id %}
+                    selected
+                    {% endif %}
+                >
+                    {{ category.category_name }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            <br><br>
+
+            <button type="submit">
+                Update Expense
+            </button>
+
+        </form>
+
+        <br>
+
+        <a href="{{ url_for('expenses') }}">
+            ← Back to Expenses
+        </a>
+
+    </div>
+
+</body>
+
+</html>

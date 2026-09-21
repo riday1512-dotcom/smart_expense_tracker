@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Budget Management</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Budget Management</h1>
+
+        <h2>Set / Update Budget</h2>
+
+        <form method="POST">
+
+            <label for="amount">
+                Budget Amount
+            </label>
+
+            <br>
+
+            <input
+                type="number"
+                id="amount"
+                name="amount"
+                step="0.01"
+                min="0.01"
+                value="{{ budget_amount if budget_amount > 0 else '' }}"
+                placeholder="Enter budget amount"
+                required
+            >
+
+            <br><br>
+
+            <label for="budget_type">
+                Budget Type
+            </label>
+
+            <br>
+
+            <select
+                id="budget_type"
+                name="budget_type"
+                required
+            >
+
+                <option
+                    value="monthly"
+                    {% if budget_type == "monthly" %}
+                    selected
+                    {% endif %}
+                >
+                    Monthly
+                </option>
+
+                <option
+                    value="weekly"
+                    {% if budget_type == "weekly" %}
+                    selected
+                    {% endif %}
+                >
+                    Weekly
+                </option>
+
+            </select>
+
+            <br><br>
+
+            <button type="submit">
+                Save Budget
+            </button>
+
+        </form>
+
+        <hr>
+
+        <h2>Budget Summary</h2>
+
+        <p>
+            <strong>Budget:</strong>
+            ₹{{ "%.2f"|format(budget_amount) }}
+        </p>
+
+        <p>
+            <strong>Type:</strong>
+            {{ budget_type|capitalize }}
+        </p>
+
+        <p>
+            <strong>Total Expenses:</strong>
+            ₹{{ "%.2f"|format(total_expenses) }}
+        </p>
+
+        <p>
+            <strong>Remaining Balance:</strong>
+            ₹{{ "%.2f"|format(remaining) }}
+        </p>
+
+        <hr>
+
+        <h2>Budget Status</h2>
+
+        <p>
+            <strong>{{ alert }}</strong>
+        </p>
+
+        <br>
+
+        <a href="{{ url_for('dashboard') }}">
+            ← Dashboard
+        </a>
+
+        |
+
+        <a href="{{ url_for('expenses') }}">
+            My Expenses
+        </a>
+
+        |
+
+        <a href="{{ url_for('logout') }}">
+            Logout
+        </a>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard - Smart Expense Tracker</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ================================
+         NAVIGATION
+         ================================ -->
+
+    <div class="navbar">
+
+        <a href="{{ url_for('dashboard') }}">
+            🏠 Dashboard
+        </a>
+        <a href="{{ url_for('profile') }}">
+    👤 Profile
+</a>
+        <a href="{{ url_for('add_expense') }}">
+            ➕ Add Expense
+        </a>
+
+        <a href="{{ url_for('expenses') }}">
+            📋 My Expenses
+        </a>
+
+        <a href="{{ url_for('budget') }}">
+            💰 Budget
+        </a>
+
+        <a href="{{ url_for('reports') }}">
+            📊 Reports
+        </a>
+
+        <a href="{{ url_for('logout') }}">
+            🚪 Logout
+        </a>
+
+    </div>
+
+
+    <!-- ================================
+         WELCOME SECTION
+         ================================ -->
+
+    <h1>Dashboard</h1>
+
+    <p>
+        Welcome back,
+        <strong>{{ user_name }}</strong>.
+        Here's an overview of your spending.
+    </p>
+
+
+    <!-- ================================
+         FINANCIAL SUMMARY
+         ================================ -->
+
+    <div class="dashboard-cards">
+
+        <!-- Total Budget -->
+
+        <div class="card">
+
+            <h3>💰 Total Budget</h3>
+
+            <div class="amount">
+                ₹{{ "%.2f"|format(budget) }}
+            </div>
+
+            <p>
+                Your current spending limit
+            </p>
+
+        </div>
+
+
+        <!-- Total Expenses -->
+
+        <div class="card">
+
+            <h3>💳 Total Expenses</h3>
+
+            <div class="amount">
+                ₹{{ "%.2f"|format(total_expenses) }}
+            </div>
+
+            <p>
+                Total amount spent
+            </p>
+
+        </div>
+
+
+        <!-- Remaining Balance -->
+
+        <div class="card">
+
+            <h3>💵 Remaining Balance</h3>
+
+            <div class="amount">
+                ₹{{ "%.2f"|format(remaining) }}
+            </div>
+
+            <p>
+                Available amount
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================
+         SPENDING PROGRESS
+         ================================ -->
+
+    <div class="summary-box">
+
+        <h2>📊 Spending Progress</h2>
+
+        {% if budget > 0 %}
+
+            {% set percentage = (total_expenses / budget * 100) %}
+
+            {% if percentage > 100 %}
+                {% set display_percentage = 100 %}
+            {% else %}
+                {% set display_percentage = percentage %}
+            {% endif %}
+
+
+            <div class="progress-bar">
+
+                <div
+                    class="progress-fill"
+                    data-progress="{{ display_percentage }}">
+                </div>
+
+            </div>
+
+
+            <p>
+
+                <strong>
+                    {{ "%.0f"|format(percentage) }}%
+                </strong>
+
+                of your budget has been used.
+
+            </p>
+
+        {% else %}
+
+            <p>
+                Set a budget to start tracking your spending.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- ================================
+         BUDGET STATUS
+         ================================ -->
+
+    <div class="summary-box">
+
+        <h2>🎯 Budget Status</h2>
+
+
+        {% if budget == 0 %}
+
+            <div class="alert alert-warning">
+
+                ⚠ No budget has been set yet.
+
+                <br><br>
+
+                <a href="{{ url_for('budget') }}">
+                    Set your budget →
+                </a>
+
+            </div>
+
+
+        {% elif total_expenses >= budget %}
+
+            <div class="alert alert-danger">
+
+                ⚠ Budget Exceeded
+
+                <br>
+
+                You have spent
+                ₹{{ "%.2f"|format(total_expenses - budget) }}
+                more than your budget.
+
+            </div>
+
+
+        {% elif total_expenses >= budget * 0.8 %}
+
+            <div class="alert alert-warning">
+
+                ⚠ Approaching Budget Limit
+
+                <br>
+
+                You have used
+                {{ "%.0f"|format((total_expenses / budget) * 100) }}%
+                of your budget.
+
+            </div>
+
+
+        {% else %}
+
+            <div class="alert alert-success">
+
+                ✓ You are within your budget.
+
+                <br>
+
+                You have used
+                {{ "%.0f"|format((total_expenses / budget) * 100) }}%
+                of your budget.
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- ================================
+         RECENT EXPENSES
+         ================================ -->
+
+    <h2>🧾 Recent Expenses</h2>
+
+
+    {% if recent_expenses %}
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Date</th>
+
+                    <th>Category</th>
+
+                    <th>Amount</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for expense in recent_expenses %}
+
+                    <tr>
+
+                        <td>
+                            {{ expense.expense_date }}
+                        </td>
+
+                        <td>
+                            {{ expense.category_name }}
+                        </td>
+
+                        <td>
+                            ₹{{ "%.2f"|format(expense.amount) }}
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+
+        <br>
+
+        <a href="{{ url_for('expenses') }}">
+            View All Expenses →
+        </a>
+
+
+    {% else %}
+
+        <div class="summary-box">
+
+            <p>
+                You haven't added any expenses yet.
+            </p>
+
+            <br>
+
+            <a href="{{ url_for('add_expense') }}">
+                + Add Your First Expense
+            </a>
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- ================================
+         QUICK ACTIONS
+         ================================ -->
+
+    <h2>⚡ Quick Actions</h2>
+
+
+    <div class="dashboard-cards">
+
+
+        <!-- Add Expense -->
+
+        <div class="card">
+
+            <h3>➕ Add Expense</h3>
+
+            <p>
+                Record a new expense.
+            </p>
+
+            <br>
+
+            <a href="{{ url_for('add_expense') }}">
+                Add Expense →
+            </a>
+
+        </div>
+
+
+        <!-- Manage Budget -->
+
+        <div class="card">
+
+            <h3>💰 Manage Budget</h3>
+
+            <p>
+                Set or update your budget.
+            </p>
+
+            <br>
+
+            <a href="{{ url_for('budget') }}">
+                Manage Budget →
+            </a>
+
+        </div>
+
+
+        <!-- View Expenses -->
+
+        <div class="card">
+
+            <h3>📋 View Expenses</h3>
+
+            <p>
+                Review and manage your expenses.
+            </p>
+
+            <br>
+
+            <a href="{{ url_for('expenses') }}">
+                View Expenses →
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================================
+     PROGRESS BAR SCRIPT
+     ================================ -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const progressBar =
+        document.querySelector(".progress-fill");
+
+    if (progressBar) {
+
+        const progress =
+            progressBar.dataset.progress;
+
+        setTimeout(function () {
+
+            progressBar.style.width =
+                progress + "%";
+
+        }, 200);
+
+    }
+
+});
+
+</script>
+
+
+</body>
+</html>

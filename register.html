@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Smart Expense Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="auth-page">
+
+    <!-- cute ₹ coin -->
+    <div class="toon toon-coin">
+        <svg viewBox="0 0 64 64">
+            <circle cx="32" cy="32" r="26" fill="#fbbf24"/>
+            <circle cx="32" cy="32" r="26" fill="none" stroke="#f59e0b" stroke-width="3"/>
+            <text x="32" y="41" font-family="Arial, sans-serif" font-size="26" font-weight="800" fill="#3d2c00" text-anchor="middle">₹</text>
+        </svg>
+    </div>
+
+    <!-- cute piggy bank -->
+    <div class="toon toon-piggy">
+        <svg viewBox="0 0 64 64">
+            <ellipse cx="32" cy="36" rx="24" ry="18" fill="#f9a8d4"/>
+            <circle cx="14" cy="24" r="7" fill="#f9a8d4"/>
+            <circle cx="12" cy="22" r="2.2" fill="#be185d"/>
+            <ellipse cx="50" cy="30" rx="7" ry="5" fill="#f472b6"/>
+            <circle cx="24" cy="32" r="3" fill="#3d1a2b"/>
+            <circle cx="38" cy="32" r="3" fill="#3d1a2b"/>
+            <path d="M26 42c2 2 10 2 12 0" stroke="#3d1a2b" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <rect x="27" y="16" width="10" height="4" rx="2" fill="#be185d"/>
+            <rect x="10" y="50" width="6" height="8" rx="3" fill="#f472b6"/>
+            <rect x="46" y="50" width="6" height="8" rx="3" fill="#f472b6"/>
+        </svg>
+    </div>
+
+    <!-- rocket, growth vibe -->
+    <div class="toon toon-rocket">
+        <svg viewBox="0 0 64 64">
+            <path d="M32 6c8 6 11 16 11 26 0 6-2 11-4 14l-14 0c-2-3-4-8-4-14 0-10 3-20 11-26z" fill="#f87171"/>
+            <circle cx="32" cy="26" r="6" fill="#bfe8ff"/>
+            <circle cx="32" cy="26" r="6" fill="none" stroke="#0891b2" stroke-width="2"/>
+            <path d="M19 34c-6 2-8 9-8 15 6-1 11-5 13-10z" fill="#fb923c"/>
+            <path d="M45 34c6 2 8 9 8 15-6-1-11-5-13-10z" fill="#fb923c"/>
+            <path d="M27 46h10l-2 10c-1 3-5 3-6 0z" fill="#fbbf24"/>
+        </svg>
+    </div>
+
+    <!-- UPI / QR phone -->
+    <div class="toon toon-phone">
+        <svg viewBox="0 0 64 64">
+            <rect x="18" y="6" width="28" height="52" rx="7" fill="#8b5cf6"/>
+            <rect x="22" y="13" width="20" height="32" rx="2" fill="#f5f3ff"/>
+            <rect x="26" y="17" width="4" height="4" fill="#4c1d95"/>
+            <rect x="34" y="17" width="4" height="4" fill="#4c1d95"/>
+            <rect x="26" y="25" width="4" height="4" fill="#4c1d95"/>
+            <rect x="34" y="25" width="4" height="4" fill="#4c1d95"/>
+            <rect x="30" y="21" width="4" height="4" fill="#4c1d95"/>
+            <circle cx="32" cy="51" r="2.4" fill="#f5f3ff"/>
+        </svg>
+    </div>
+
+    <!-- cheerful girl, jumping -->
+    <div class="toon toon-girl">
+        <svg viewBox="0 0 64 64">
+            <path d="M32 22c9 2 14 12 12 24-8 4-24 4-32 0-2-12 3-22 12-24z" fill="#fb7185"/>
+            <circle cx="32" cy="18" r="11" fill="#c68863"/>
+            <path d="M21 14c0-7 6-12 11-12s11 5 11 12c-3-2-6 1-11 0-5 1-8-2-11 0z" fill="#3d2314"/>
+            <circle cx="27" cy="18" r="1.8" fill="#2d1a10"/>
+            <circle cx="37" cy="18" r="1.8" fill="#2d1a10"/>
+            <path d="M27 23c2 2 8 2 10 0" stroke="#2d1a10" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+            <path d="M12 40c3-5 8-8 8-8M52 40c-3-5-8-8-8-8" stroke="#fb7185" stroke-width="7" fill="none" stroke-linecap="round"/>
+        </svg>
+    </div>
+
+    <!-- cheerful boy, jumping -->
+    <div class="toon toon-boy">
+        <svg viewBox="0 0 64 64">
+            <path d="M32 22c9 2 14 12 12 24-8 4-24 4-32 0-2-12 3-22 12-24z" fill="#38bdf8"/>
+            <circle cx="32" cy="18" r="11" fill="#8a5a37"/>
+            <path d="M20 15c2-6 7-9 12-9s10 3 12 9c-2-3-16-3-24 0z" fill="#1c1108"/>
+            <circle cx="27" cy="19" r="1.8" fill="#1c1108"/>
+            <circle cx="37" cy="19" r="1.8" fill="#1c1108"/>
+            <path d="M27 24c2 2 8 2 10 0" stroke="#1c1108" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+            <path d="M12 36c3-6 8-8 8-8M52 36c-3-6-8-8-8-8" stroke="#38bdf8" stroke-width="7" fill="none" stroke-linecap="round"/>
+        </svg>
+    </div>
+
+    <!-- original "Budget Hero" — caped, swoops across on load -->
+    <div class="toon toon-cape">
+        <svg viewBox="0 0 64 64">
+            <path d="M18 40c-6 4-10 10-11 17 8-2 14-6 17-11z" fill="#4338ca"/>
+            <path d="M46 40c6 4 10 10 11 17-8-2-14-6-17-11z" fill="#0e7490"/>
+            <ellipse cx="32" cy="34" rx="13" ry="16" fill="#6366f1"/>
+            <circle cx="32" cy="20" r="10" fill="#c68863"/>
+            <path d="M22 17c1-6 5-9 10-9s9 3 10 9c-3-2-17-2-20 0z" fill="#1e1b4b"/>
+            <path d="M23 19h18v4c0 3-3 6-9 6s-9-3-9-6z" fill="#312e81"/>
+            <rect x="26" y="42" width="12" height="8" rx="3" fill="#fbbf24"/>
+            <path d="M20 44c-3 2-5 5-4 8 3-1 6-3 7-6zM44 44c3 2 5 5 4 8-3-1-6-3-7-6z" fill="#c68863"/>
+        </svg>
+    </div>
+
+    <!-- original "Shield Guardian" — floating, spinning ₹ shield -->
+    <div class="toon toon-shield">
+        <svg viewBox="0 0 64 64">
+            <circle cx="32" cy="20" r="10" fill="#c68863"/>
+            <path d="M22 17c1-6 5-9 10-9s9 3 10 9c-3-2-17-2-20 0z" fill="#1c1108"/>
+            <path d="M22 30c-4 2-6 7-6 12 5 3 20 3 32 0 0-5-2-10-6-12-6 3-14 3-20 0z" fill="#34d399"/>
+            <g class="shield-emblem">
+                <path d="M32 26l12 5v9c0 8-6 13-12 15-6-2-12-7-12-15v-9z" fill="#f8fafc" stroke="#059669" stroke-width="2"/>
+                <text x="32" y="42" font-family="Arial, sans-serif" font-size="14" font-weight="800" fill="#059669" text-anchor="middle">₹</text>
+            </g>
+        </svg>
+    </div>
+
+    <!-- original "Edge Crawler" — masked climber, creeps around the border -->
+    <div class="toon toon-crawler">
+        <svg viewBox="0 0 64 64">
+            <ellipse cx="32" cy="36" rx="15" ry="13" fill="#0f766e"/>
+            <path d="M20 30c-6-2-11-7-13-13 6 0 12 3 15 8zM44 30c6-2 11-7 13-13-6 0-12 3-15 8zM18 44c-6 1-11 6-13 12 6-1 12-4 15-9zM46 44c6 1 11 6 13 12-6-1-12-4-15-9z" fill="#115e59"/>
+            <path d="M22 32c3-3 7-4 10-4s7 1 10 4c-2 4-6 6-10 6s-8-2-10-6z" fill="#f8fafc"/>
+            <path d="M25 33l4 2-4 2zM39 33l-4 2 4 2z" fill="#0f172a"/>
+        </svg>
+    </div>
+
+    <!-- twinkling sparkles -->
+    <div class="sparkle sparkle-1">✦</div>
+    <div class="sparkle sparkle-2">✦</div>
+    <div class="sparkle sparkle-3">✦</div>
+    <div class="sparkle sparkle-4">✦</div>
+    <div class="sparkle sparkle-5">✦</div>
+
+    <div class="auth-card">
+
+        <div class="auth-mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"></path><path d="M7 15l4-6 3 4 5-8"></path></svg>
+        </div>
+
+        <h2>Create your account</h2>
+        <h3>Start tracking every rupee in minutes</h3>
+
+        <form method="POST" id="register-form" novalidate>
+
+            <div class="field">
+                <label for="name">Name</label>
+                <div class="input-group">
+                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+                    <input type="text" id="name" name="name" placeholder="Your full name" autocomplete="name" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="email">Email</label>
+                <div class="input-group">
+                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg>
+                    <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="password">Password</label>
+                <div class="input-group">
+                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+                    <input type="password" id="password" name="password" placeholder="Create a password" autocomplete="new-password" required minlength="8">
+                    <button type="button" class="toggle-visibility" data-target="password" aria-label="Show password" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                            <line class="eye-slash" x1="2.5" y1="2.5" x2="21.5" y2="21.5"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="strength-meter" id="strength-meter" aria-hidden="true">
+                    <span></span><span></span><span></span><span></span>
+                </div>
+                <p class="strength-label" id="strength-label">Use 8+ characters with a number and a symbol</p>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <span class="btn-label">Create account</span>
+                <span class="btn-spinner" hidden></span>
+                <span class="confetti-burst">
+                    <i></i><i></i><i></i><i></i><i></i><i></i>
+                </span>
+            </button>
+
+        </form>
+
+        <p>
+            Already have an account?
+            <a href="{{ url_for('login') }}">Log in</a>
+        </p>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+    <script>
+    // Inline fallback for the password show/hide toggle — kept here,
+    // not in auth.js, so it works even if the external script 404s
+    // or loads in the wrong order.
+    document.querySelectorAll('.toggle-visibility').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var input = btn.parentElement.querySelector('input');
+        if (!input) return;
+        if (input.getAttribute('type') === 'password') {
+          input.setAttribute('type', 'text');
+          btn.classList.add('is-visible');
+        } else {
+          input.setAttribute('type', 'password');
+          btn.classList.remove('is-visible');
+        }
+      });
+    });
+    </script>
+</body>
+</html>
